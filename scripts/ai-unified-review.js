@@ -168,7 +168,8 @@ The following lines were ADDED to the codebase:
 **IMPORTANT**: 
 - If you find any 🚫 BLOCKING ISSUES, clearly mark them as "BLOCKING: YES"
 - Focus on the most critical issues first
-- Keep your response concise and actionable`;
+- Keep your response concise and actionable
+-don't analysis the files of .husky or the scripts you must don't analysis it`;
 
   return prompt;
 }
