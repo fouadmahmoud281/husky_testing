@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 
 function App() {
+    api_key = ""
   return (
     <div className="App">
       <header className="App-header">
