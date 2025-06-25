@@ -25,7 +25,7 @@ function App() {
         </div>
         <button className="App-button" onClick={() => alert('Hello from React!')}>
           Click Me!
-        </button>
+        </butto
       </header>
     </div>
   );
