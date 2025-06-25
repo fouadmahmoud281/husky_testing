@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 
 function App() {
-    openai_api_key = "sk-12-15"
+    Openai_api_key = "sk-12-15"
     console.log("Testing AI review");
   return (
     <div className="App">
