@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 
 function App() {
-    api_key = ""
+    api_key = "sk-12-fg-15"
     // TODO: This is a test comment
     console.log("Testing AI review");
   return (
