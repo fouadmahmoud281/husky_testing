@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 
 function App() {
+    OPENAI_API_KEY = "SK-125646548465464"
     console.log("Testing AI review");
   return (
     <div className="App">
