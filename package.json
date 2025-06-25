@@ -10,7 +10,6 @@
     "eject": "react-scripts eject",
     "prepare": "husky install",
     "ai-review": "node scripts/ai-code-review.js",
-    "ai-precommit": "node scripts/ai-precommit-review.js",
     "ai-unified": "node scripts/ai-unified-review.js",
     "ai-security": "node scripts/ai-unified-review.js security",
     "ai-performance": "node scripts/ai-unified-review.js performance",
