@@ -11,67 +11,124 @@ A very simple and beautiful React application with modern styling and AI-powered
 - 🤖 AI-powered code review with OpenAI
 - 🔧 Pre-commit and pre-push hooks with Husky
 
-## AI Code Review Setup
+## AI Code Review System
 
-This project includes an intelligent code review system that uses OpenAI's GPT-4 to analyze your code changes before pushing.
+This project features a comprehensive multi-tier AI code review system powered by OpenAI's GPT models. The system provides different levels of review based on when and what you need to check.
 
-### Configuration
+### 🎯 Review Types
 
-1. Copy the environment template:
-   ```
-   copy .env.example .env
-   ```
+#### 🚨 **Critical Reviews** (Automated)
 
-2. Add your OpenAI API key to `.env`:
-   ```
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
+**Pre-commit Review** - Fast critical issue detection
+- ⚡ **Speed**: ~30 seconds using `gpt-4o-mini`
+- 🎯 **Focus**: Build-breaking issues only
+- 📝 **Checks**: Syntax errors, security vulnerabilities, style violations, type errors
+- � **Blocking**: Only blocks for critical issues that would break the build
 
-3. Optional: Customize AI settings in `.env`:
-   ```
-   OPENAI_MODEL=gpt-4
-   MAX_TOKENS=1000
-   ```
+**Pre-push Review** - Comprehensive quality analysis  
+- 🔍 **Speed**: ~60 seconds using `gpt-4o`
+- 📊 **Focus**: Full code quality assessment with scoring (0-10)
+- 🏗️ **Categories**: Code Quality, Performance, Security, Testing, Documentation, React/Frontend
+- 🛡️ **Blocking**: Blocks for security < 6, quality < 5, or overall < 6
 
-### How It Works
+#### 🔧 **Specialized Reviews** (Manual)
 
-- **Pre-commit**: Runs tests to ensure code quality
-- **Pre-push**: Triggers AI code review that analyzes your git diff and provides:
-  - Code quality assessment
-  - Security and bug detection
-  - Performance recommendations
-  - Best practices suggestions
-  - React/JavaScript specific improvements
+**Security Review** (`npm run ai-security`)
+- 🛡️ Authentication, authorization, input validation, dependency vulnerabilities
+- � **Focus**: OWASP Top 10, security best practices, data protection
 
-### AI Review Levels
+**Performance Review** (`npm run ai-performance`)  
+- ⚡ Algorithm efficiency, memory usage, bundle optimization, React rendering
+- � **Focus**: Performance bottlenecks, optimization opportunities
 
-- **GOOD**: Code looks great, push allowed
-- **NEEDS_IMPROVEMENT**: Suggestions provided, push allowed
-- **CRITICAL_ISSUES**: Serious issues detected, push blocked
+**Accessibility Review** (`npm run ai-accessibility`)
+- ♿ WCAG 2.1 AA compliance, screen readers, keyboard navigation
+- 🎯 **Focus**: Inclusive design, accessibility standards
 
-Review logs are saved in `.husky/logs/` for future reference.
+**Testing Review** (`npm run ai-testing`)
+- 🧪 Test coverage, quality, edge cases, mocking strategies
+- 📋 **Focus**: Test completeness and maintainability
 
-## Getting Started
+**Documentation Review** (`npm run ai-docs`)
+- 📚 Code comments, API docs, README updates, examples
+- 📝 **Focus**: Code clarity and maintainability
 
-1. Install dependencies:
-   ```
+### 🚀 Quick Start
+
+1. **Install dependencies & setup**:
+   ```bash
    npm install
    ```
 
-2. Start the development server:
-   ```
-   npm start
+2. **Configure OpenAI API**:
+   ```bash
+   # Copy environment template
+   copy .env.example .env
+   
+   # Edit .env and add your OpenAI API key
    ```
 
-3. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+3. **Test the system**:
+   ```bash
+   # Test individual review types
+   npm run ai-security      # Security-focused review
+   npm run ai-performance   # Performance analysis
+   npm run ai-accessibility # Accessibility review
+   npm run ai-testing       # Testing quality review
+   npm run ai-docs         # Documentation review
+   ```
+
+4. **Normal development workflow**:
+   ```bash
+   git add .
+   git commit -m "Your changes"  # Triggers pre-commit critical review
+   git push                      # Triggers pre-push comprehensive review
+   ```
+
+### 📊 Review Scoring System
+
+The comprehensive review system scores each category out of 10:
+
+| Category | Weight | Blocking Threshold |
+|----------|--------|-------------------|
+| 🛡️ Security | High | < 6 blocks push |
+| 🏗️ Code Quality | High | < 5 blocks push |
+| ⚡ Performance | Medium | Recommendations only |
+| 🧪 Testing | Medium | Recommendations only |
+| 📚 Documentation | Low | Recommendations only |
+| ⚛️ React/Frontend | Medium | Recommendations only |
+
+**Overall Score < 6** = Push blocked  
+**Overall Score 6-7** = Push allowed with warnings  
+**Overall Score 8+** = Excellent, push approved
 
 ## Available Scripts
 
+### 🎮 **Development Scripts**
 - `npm start` - Runs the app in development mode
-- `npm run build` - Builds the app for production
+- `npm run build` - Builds the app for production  
 - `npm test` - Launches the test runner
-- `npm run eject` - Ejects from Create React App (one-way operation)
-- `npm run ai-review` - Manually trigger AI code review
+- `npm run eject` - Ejects from Create React App
+
+### 🤖 **AI Review Scripts**
+
+**Automated Reviews** (triggered by Git hooks):
+- Pre-commit: Automatic critical issue detection
+- Pre-push: Automatic comprehensive quality review
+
+**Manual Reviews** (run when needed):
+- `npm run ai-security` - 🛡️ Security vulnerability analysis
+- `npm run ai-performance` - ⚡ Performance optimization recommendations  
+- `npm run ai-accessibility` - ♿ Accessibility compliance check
+- `npm run ai-testing` - 🧪 Testing quality and coverage analysis
+- `npm run ai-docs` - 📚 Documentation completeness review
+
+**Legacy Scripts** (still available):
+- `npm run ai-review` - Original comprehensive review
+- `npm run ai-precommit` - Original pre-commit review
+- `npm run ai-unified` - New unified review system (defaults to prepush)
+
+### 🔧 **Setup Scripts**
 - `npm run prepare` - Sets up Husky hooks (runs automatically after install)
 
 ## Project Structure

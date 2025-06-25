@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "🤖 Running AI Code Review..."
-npm run ai-review
+echo "🔍 Running comprehensive AI code review..."
+node scripts/ai-unified-review.js prepush
 
 if [ $? -ne 0 ]; then
-  echo "❌ AI Code Review failed. Please review the recommendations before pushing."
+  echo "❌ Comprehensive review failed. Please address the issues before pushing."
   exit 1
 fi
 
-echo "✅ AI Code Review completed successfully!"
+echo "✅ Comprehensive AI review completed successfully!"

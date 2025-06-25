@@ -3,6 +3,8 @@ import './App.css';
 
 function App() {
     api_key = ""
+    // TODO: This is a test comment
+    console.log("Testing AI review");
   return (
     <div className="App">
       <header className="App-header">

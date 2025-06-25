@@ -1,12 +1,19 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "🔍 Running pre-commit checks..."
+echo "🔍 Running AI-powered pre-commit checks..."
 
-# Run tests if they exist
-if npm test -- --watchAll=false --passWithNoTests; then
-  echo "✅ Tests passed!"
+# Check if .env file exists
+if [ ! -f .env ]; then
+  echo "⚠️  .env file not found. Please copy .env.example to .env and add your OpenAI API key."
+  echo "You can still commit, but AI review will be skipped."
+fi
+
+# Run AI pre-commit review (critical issues only)
+echo "⚡ Starting critical issues check..."
+if node scripts/ai-unified-review.js precommit; then
+  echo "✅ Pre-commit review passed!"
 else
-  echo "❌ Tests failed!"
+  echo "❌ Critical issues found - commit blocked!"
   exit 1
 fi
