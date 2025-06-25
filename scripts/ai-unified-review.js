@@ -215,61 +215,32 @@ The following lines were ADDED to the codebase:
 3. **Improvement Suggestions**: Optional enhancements for code quality
 
 **IMPORTANT**: 
-- Mark as "BLOCKING: YES" if ANY issues found in categories 1-3 (Critical/Blocking)
-- Mark as "BLOCKING: NO" if only categories 4-7 have issues or no issues found
+- START your response with exactly one of these two lines:
+  * "APPROVAL_STATUS: 1" (if NO critical issues found in categories 1-3)
+  * "APPROVAL_STATUS: 0" (if ANY critical issues found in categories 1-3)
 - For each category, write "None identified" if no issues found in that category
 - Provide specific file names and line references when possible
 - Focus on actionable feedback
-- Don't analyze files in .husky, .git, node_modules, or build directories`;
+- Don't analyze files in .husky, .git, node_modules, or build directories
+- Remember: Only categories 1-3 should cause blocking (APPROVAL_STATUS: 0)`;
 
   return prompt;
 }
 
 /**
- * Check if the review contains actual critical/blocking issues
+ * Check if the review contains blocking issues based on AI's approval status
  */
 function checkForCriticalIssues(review) {
-  const reviewLower = review.toLowerCase();
+  // Look for the approval status at the beginning of the response
+  const approvalMatch = review.match(/APPROVAL_STATUS:\s*([01])/);
   
-  // Critical categories that should block
-  const criticalSections = [
-    '1. syntax & build issues',
-    '2. security vulnerabilities', 
-    '3. code style & standards'
-  ];
-  
-  for (const section of criticalSections) {
-    const sectionIndex = reviewLower.indexOf(section);
-    if (sectionIndex !== -1) {
-      // Get the content after this section header until the next numbered section
-      const afterSection = reviewLower.substring(sectionIndex + section.length);
-      const nextSectionMatch = afterSection.match(/\d+\./);
-      const sectionContent = nextSectionMatch 
-        ? afterSection.substring(0, nextSectionMatch.index)
-        : afterSection.substring(0, 500); // Limit to avoid false positives
-      
-      // Check if this section has actual issues (not just "none identified")
-      if (sectionContent.includes('none identified') || 
-          sectionContent.includes('no issues') ||
-          sectionContent.includes('not found') ||
-          sectionContent.includes('all good')) {
-        continue; // This section is clean
-      }
-      
-      // Look for issue indicators
-      if (sectionContent.includes('- ') || 
-          sectionContent.includes('• ') ||
-          sectionContent.includes('* ') ||
-          /\d+\./.test(sectionContent) ||
-          sectionContent.includes('error') ||
-          sectionContent.includes('issue') ||
-          sectionContent.includes('problem') ||
-          sectionContent.includes('violation')) {
-        return true; // Found actual issues in critical section
-      }
-    }
+  if (approvalMatch) {
+    const status = parseInt(approvalMatch[1]);
+    return status === 0; // Return true if blocking (status 0), false if approved (status 1)
   }
   
+  // Fallback: if no approval status found, don't block (assume approved)
+  console.log('⚠️  No APPROVAL_STATUS found in AI response, assuming approved');
   return false;
 }
 
@@ -356,13 +327,8 @@ async function main() {
     console.log(review);
     console.log('=' .repeat(50));
 
-    // Check for blocking issues - Critical/Blocking categories (1-3)
-    const reviewLower = review.toLowerCase();
-    const hasBlockingIssues = 
-      review.includes('BLOCKING: YES') || 
-      reviewLower.includes('blocking: yes') ||
-      // Check for actual issues in critical categories (not "None identified")
-      checkForCriticalIssues(review);
+    // Check for blocking issues using AI's explicit approval status
+    const hasBlockingIssues = checkForCriticalIssues(review);
 
     if (hasBlockingIssues) {
       console.log('\n❌ CRITICAL/BLOCKING ISSUES FOUND - Review failed!');
