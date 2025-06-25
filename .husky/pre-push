@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🤖 Running AI Code Review..."
+npm run ai-review
+
+if [ $? -ne 0 ]; then
+  echo "❌ AI Code Review failed. Please review the recommendations before pushing."
+  exit 1
+fi
+
+echo "✅ AI Code Review completed successfully!"

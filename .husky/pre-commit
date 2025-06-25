@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running pre-commit checks..."
+
+# Run tests if they exist
+if npm test -- --watchAll=false --passWithNoTests; then
+  echo "✅ Tests passed!"
+else
+  echo "❌ Tests failed!"
+  exit 1
+fi
